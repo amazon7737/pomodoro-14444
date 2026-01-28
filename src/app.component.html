@@ -1,0 +1,87 @@
+<div class="min-h-screen bg-white text-slate-800 flex flex-col items-center justify-center p-6 relative overflow-hidden font-['Inter']">
+  
+  <!-- Subtle Static Background Decorations (Optional, kept neutral) -->
+  <div class="absolute top-[-10%] right-[-10%] w-[60vh] h-[60vh] bg-slate-50 rounded-full blur-[100px] opacity-60 pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] left-[-10%] w-[60vh] h-[60vh] bg-slate-50 rounded-full blur-[100px] opacity-60 pointer-events-none"></div>
+
+  <!-- Main Content -->
+  <main class="relative flex flex-col items-center gap-10 z-10 w-full max-w-md">
+    
+    <!-- Title -->
+    <header class="text-center space-y-1 select-none">
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Focus Timer</h1>
+      <p class="text-slate-500 text-xs font-medium uppercase tracking-widest opacity-80"
+         [style.color]="themeColor()">
+        {{ currentSettings().label }} SESSION
+      </p>
+    </header>
+
+    <!-- Clock Widget -->
+    <div class="w-full flex justify-center py-4">
+      <app-visual-clock 
+        class="w-full"
+        [timeLeft]="timeLeft()" 
+        [maxTime]="currentSettings().duration"
+        [isRunning]="isRunning()"
+        [label]="currentSettings().label"
+        [color]="themeColor()"
+        (toggle)="toggleTimer()"
+        (timeChange)="updateTime($event)">
+      </app-visual-clock>
+    </div>
+
+    <!-- Mode Selector (Pill Shape) -->
+    <div class="bg-white p-1 rounded-full shadow-sm border border-slate-200 flex items-center select-none">
+      <button 
+        (click)="setMode('pomodoro')"
+        [class]="'px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 ' + (currentMode() === 'pomodoro' ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50')"
+        [style.backgroundColor]="currentMode() === 'pomodoro' ? themeColor() : ''"
+      >
+        FOCUS
+      </button>
+      <button 
+        (click)="setMode('shortBreak')"
+        [class]="'px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 ' + (currentMode() === 'shortBreak' ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50')"
+        [style.backgroundColor]="currentMode() === 'shortBreak' ? themeColor() : ''"
+      >
+        SHORT
+      </button>
+      <button 
+        (click)="setMode('longBreak')"
+        [class]="'px-5 py-2 rounded-full text-xs font-bold transition-all duration-200 ' + (currentMode() === 'longBreak' ? 'text-white shadow-md' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50')"
+        [style.backgroundColor]="currentMode() === 'longBreak' ? themeColor() : ''"
+      >
+        LONG
+      </button>
+    </div>
+
+    <!-- Bottom Controls: Reset & Color Picker -->
+    <div class="flex items-center gap-6">
+        <!-- Reset -->
+        <button 
+          (click)="reset()"
+          class="text-xs text-slate-400 font-medium hover:text-slate-600 transition-colors flex items-center gap-1.5 px-4 py-2 rounded-lg hover:bg-slate-50"
+          aria-label="Reset Timer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          RESET
+        </button>
+        
+        <!-- Color Picker -->
+        <div class="flex items-center gap-2 group relative">
+            <label for="colorPicker" class="text-xs text-slate-400 font-medium group-hover:text-slate-600 transition-colors cursor-pointer">THEME</label>
+            <div class="relative w-6 h-6 rounded-full overflow-hidden shadow-sm border border-slate-200 cursor-pointer hover:scale-110 transition-transform">
+                <input 
+                    id="colorPicker"
+                    type="color" 
+                    [value]="themeColor()"
+                    (input)="updateColor($event)"
+                    class="absolute inset-0 w-[150%] h-[150%] -top-[25%] -left-[25%] cursor-pointer p-0 border-0 outline-none"
+                    aria-label="Choose Theme Color"
+                >
+            </div>
+        </div>
+    </div>
+
+  </main>
+</div>

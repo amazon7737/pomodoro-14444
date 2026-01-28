@@ -1,0 +1,5 @@
+{
+  "name": "Visual Pomodoro",
+  "description": "A minimalist Pomodoro timer featuring an analog visual countdown face inspired by physical Time Timers.",
+  "requestFramePermissions": []
+}
